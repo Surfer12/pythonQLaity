@@ -35,11 +35,13 @@ PROVIDER_TO_DEFAULT_MODEL_NAME = {
     "vertex": "claude-2",
 }
 
+
 class APIProvider:
     """Supported API providers for Claude."""
     ANTHROPIC = "anthropic"
     BEDROCK = "bedrock"
     VERTEX = "vertex"
+
 
 async def sampling_loop(
     client: Anthropic,
@@ -90,16 +92,18 @@ async def sampling_loop(
     except RateLimitError as e:
         # Handle rate limiting by waiting and retrying
         await handle_rate_limit(e)
-        return await sampling_loop(client, messages, tools, tool_choice, **kwargs)
+        return await sampling_loop(
+            client,
+            messages,
+            tools,
+            tool_choice,
+            **kwargs
+        )
 
     return response_text, tool_results
 
-async def handle_rate_limit(error: RateLimitError) -> None:
-    """
-    Handle rate limit errors by implementing appropriate backoff.
 
-    Args:
-        error: The RateLimitError that was raised
-    """
+async def handle_rate_limit(error: RateLimitError) -> None:
+    """Handle rate limit errors by implementing appropriate backoff."""
     # TODO: Implement exponential backoff
     pass

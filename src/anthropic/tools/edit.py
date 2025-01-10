@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Tuple
 from .base import BaseTool, ToolResult
 from .computer import ComputerTool
 
+
 class EditTool(ComputerTool):
     """Tool for editing file contents."""
 
@@ -74,9 +75,9 @@ class EditTool(ComputerTool):
 
         # Create new content
         new_lines = (
-            original_lines[:start_line - 1] +
-            [line + "\n" for line in new_content.splitlines()] +
-            original_lines[end_line:]
+            original_lines[:start_line - 1]
+            + [line + "\n" for line in new_content.splitlines()]
+            + original_lines[end_line:]
         )
 
         # Generate diff
@@ -95,6 +96,7 @@ class EditTool(ComputerTool):
             f.writelines(new_lines)
 
         return "\n".join(diff)
+
 
 class ReplaceTool(ComputerTool):
     """Tool for replacing text in files."""

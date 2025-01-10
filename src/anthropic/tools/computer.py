@@ -7,6 +7,7 @@ from typing import Dict, Optional
 
 from .base import BaseTool, ToolResult
 
+
 class ComputerTool(BaseTool):
     """Base class for computer interaction tools."""
 
@@ -47,6 +48,7 @@ class ComputerTool(BaseTool):
             raise ValueError(
                 f"Path {path} is outside workspace root {self.workspace_root}"
             )
+
 
 class FileReadTool(ComputerTool):
     """Tool for reading file contents."""
@@ -105,23 +107,48 @@ class FileReadTool(ComputerTool):
         with open(path) as f:
             lines = f.readlines()
 
-        # Adjust indices
-        start_idx = max(0, start_line - 1)
-        end_idx = min(len(lines), end_line)
+        total_lines = len(lines)
+        if start_line < 1:
+            raise ValueError("Start line must be >= 1")
+        if end_line > total_lines:
+            raise ValueError(
+                f"End line {end_line} exceeds file length {total_lines}"
+            )
+        if start_line > end_line:
+            raise ValueError(
+                f"Start line {start_line} is after end line {end_line}"
+            )
 
-        # Get requested lines
-        content = "".join(lines[start_idx:end_idx])
+        # Format the requested lines
+        requested_lines = lines[start_line - 1:end_line]
+        result = [
+            f"Lines {start_line}-{end_line} of {total_lines}:",
+            "```",
+            *requested_lines,
+            "```\n",
+        ]
 
-        # Add summary of other lines
-        if start_idx > 0:
-            content = f"[Lines 1-{start_idx} omitted]\n" + content
-        if end_idx < len(lines):
-            content += f"\n[Lines {end_idx + 1}-{len(lines)} omitted]"
+        # Add summary of other sections if needed
+        if start_line > 1:
+            result.extend([
+                f"Lines 1-{start_line - 1}:",
+                "```",
+                *lines[:start_line - 1],
+                "```\n",
+            ])
+        if end_line < total_lines:
+            result.extend([
+                f"Lines {end_line + 1}-{total_lines}:",
+                "```",
+                *lines[end_line:],
+                "```",
+            ])
 
-        return content
+        return "".join(result)
+
 
 class FileWriteTool(ComputerTool):
-    """Tool for writing to files."""
+    """Tool for writing file contents."""
 
     @property
     def name(self) -> str:
@@ -145,7 +172,6 @@ class FileWriteTool(ComputerTool):
             "mode": {
                 "type": "string",
                 "description": "Write mode (w=overwrite, a=append)",
-                "enum": ["w", "a"],
                 "default": "w",
             },
         }
@@ -176,7 +202,8 @@ class FileWriteTool(ComputerTool):
         with open(path, mode) as f:
             f.write(content)
 
-        return f"Successfully wrote to {relative_path}"
+        return f"Wrote {len(content)} bytes to {relative_path}"
+
 
 class CommandTool(ComputerTool):
     """Tool for running shell commands."""
@@ -194,7 +221,7 @@ class CommandTool(ComputerTool):
         return {
             "command": {
                 "type": "string",
-                "description": "Command to execute",
+                "description": "Command to run",
             },
             "cwd": {
                 "type": "string",
@@ -208,7 +235,7 @@ class CommandTool(ComputerTool):
         Run a shell command.
 
         Args:
-            command: Command to execute
+            command: Command to run
             cwd: Working directory relative to workspace root
 
         Returns:
@@ -216,6 +243,9 @@ class CommandTool(ComputerTool):
         """
         work_dir = self._resolve_path(cwd)
         self._validate_path(work_dir)
+
+        if not work_dir.is_dir():
+            raise NotADirectoryError(f"Directory not found: {work_dir}")
 
         try:
             result = subprocess.run(
@@ -228,4 +258,8 @@ class CommandTool(ComputerTool):
             )
             return result.stdout
         except subprocess.CalledProcessError as e:
-            return f"Error: {e.stderr}"
+            return (
+                f"Command failed with exit code {e.returncode}.\n"
+                f"stdout: {e.stdout}\n"
+                f"stderr: {e.stderr}"
+            )

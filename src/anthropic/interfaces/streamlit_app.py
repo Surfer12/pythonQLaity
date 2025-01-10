@@ -55,6 +55,7 @@ STREAMLIT_STYLE = """
 </style>
 """
 
+
 def setup_page() -> None:
     """Configure the Streamlit page settings."""
     st.set_page_config(
@@ -64,6 +65,7 @@ def setup_page() -> None:
         initial_sidebar_state="expanded",
     )
     st.markdown(STREAMLIT_STYLE, unsafe_allow_html=True)
+
 
 def load_api_key() -> Optional[str]:
     """
@@ -83,6 +85,7 @@ def load_api_key() -> Optional[str]:
 
     return None
 
+
 def save_api_key(api_key: str) -> None:
     """
     Save the API key to the config file.
@@ -93,6 +96,7 @@ def save_api_key(api_key: str) -> None:
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     API_KEY_FILE.write_text(api_key)
 
+
 @contextmanager
 def loading_spinner(text: str) -> Generator[None, None, None]:
     """
@@ -101,8 +105,12 @@ def loading_spinner(text: str) -> Generator[None, None, None]:
     Args:
         text: The text to show while loading
     """
-    with st.spinner(text):
-        yield
+    try:
+        with st.spinner(text):
+            yield
+    finally:
+        pass
+
 
 def handle_tool_result(result: ToolResult) -> None:
     """
@@ -119,6 +127,7 @@ def handle_tool_result(result: ToolResult) -> None:
 
     with st.expander("Output"):
         st.json(result.output)
+
 
 def format_messages(
     chat_history: List[Dict[str, Any]],
@@ -151,6 +160,7 @@ def format_messages(
         })
 
     return formatted_msgs
+
 
 def main() -> None:
     """Main Streamlit application."""
@@ -256,6 +266,7 @@ def main() -> None:
                 )
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
+
 
 if __name__ == "__main__":
     main()

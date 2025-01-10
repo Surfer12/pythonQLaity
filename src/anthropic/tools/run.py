@@ -7,6 +7,7 @@ from typing import Dict, Optional
 
 from .computer import ComputerTool
 
+
 class RunTool(ComputerTool):
     """Tool for running commands."""
 
@@ -60,25 +61,35 @@ class RunTool(ComputerTool):
         work_dir = self._resolve_path(cwd)
         self._validate_path(work_dir)
 
+        if not work_dir.is_dir():
+            raise NotADirectoryError(f"Directory not found: {work_dir}")
+
         try:
             proc = await asyncio.create_subprocess_shell(
                 command,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
-                cwd=str(work_dir),
+                cwd=work_dir,
             )
 
-            stdout, stderr = await asyncio.wait_for(
-                proc.communicate(),
-                timeout=timeout,
-            )
+            try:
+                stdout, stderr = await asyncio.wait_for(
+                    proc.communicate(),
+                    timeout=timeout,
+                )
+            except asyncio.TimeoutError:
+                proc.terminate()
+                await proc.wait()
+                return f"Command timed out after {timeout} seconds"
 
             if proc.returncode != 0:
-                return f"Error: {stderr.decode()}"
+                return (
+                    f"Command failed with exit code {proc.returncode}.\n"
+                    f"stdout: {stdout.decode()}\n"
+                    f"stderr: {stderr.decode()}"
+                )
 
             return stdout.decode()
 
-        except asyncio.TimeoutError:
-            return f"Error: Command timed out after {timeout} seconds"
         except Exception as e:
-            return f"Error: {str(e)}"
+            return f"Error executing command: {str(e)}"
