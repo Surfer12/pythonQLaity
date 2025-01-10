@@ -80,13 +80,15 @@ class EditTool(ComputerTool):
         )
 
         # Generate diff
-        diff = list(difflib.unified_diff(
-            original_lines,
-            new_lines,
-            fromfile=str(path),
-            tofile=str(path),
-            lineterm="",
-        ))
+        diff = list(
+            difflib.unified_diff(
+                original_lines,
+                new_lines,
+                fromfile=str(path),
+                tofile=str(path),
+                lineterm="",
+            )
+        )
 
         # Write new content
         with open(path, "w") as f:
