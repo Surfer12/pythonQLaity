@@ -1,0 +1,127 @@
+---
+title: Connecting Pattern Monitoring to Validation
+description: >
+  Integration plan for connecting the pattern monitoring framework with the
+  validation process, focusing on metric collection and recording.
+
+steps:
+  identify_scripts:
+    name: Identify Target Validation Scripts
+    description: >
+      Pinpoint specific validation scripts that need modification, including
+      both Python and Mojo validation processes.
+    target_scripts:
+      - Python validation scripts in validation_scripts directory
+      - Mojo validation scripts (e.g., mojo_integrity_validator.mojo)
+
+  locate_recording_points:
+    name: Locate Metric Recording Points
+    description: >
+      Identify key points in validation scripts where metrics can be recorded.
+    recording_points:
+      - name: Start and End of Validation
+        purpose: Record timestamps or start/end events
+      - name: File Processing
+        purpose: Record number of files being processed
+      - name: Integrity Checks
+        purpose: Record outcome of integrity checks
+      - name: Error Handling
+        purpose: Record types and frequency of errors
+      - name: Pattern Detection
+        purpose: Record pattern occurrences if applicable
+
+  pattern_metrics_integration:
+    name: Integrate with PatternMetrics
+    description: >
+      Determine mechanism for validation scripts to interact with PatternMetrics.
+    approaches:
+      direct_import:
+        name: Direct Import
+        description: >
+          Import PatternMetrics module directly if in same project
+        suitable_for: Tightly coupled architectures
+      function_calls:
+        name: Function Calls
+        description: >
+          Define functions in PatternMetrics for validation scripts to call
+        suitable_for: Modular architectures
+      message_passing:
+        name: Message Passing/Event System
+        description: >
+          Implement event system where validation scripts publish metric data
+        suitable_for: Decoupled architectures
+
+  define_metrics:
+    name: Define Specific Metrics
+    description: Define the specific metrics to be recorded during validation.
+    metrics:
+      files_validated:
+        name: Number of Files Validated
+        type: counter
+        description: Total count of files processed
+      integrity_success_rate:
+        name: Integrity Check Success Rate
+        type: percentage
+        description: >
+          Percentage of files passing integrity checks
+        calculation: (successful_checks / total_files) * 100
+      error_types:
+        name: Types of Errors Encountered
+        type: map
+        description: Breakdown of different error types and frequencies
+      validation_time:
+        name: Validation Time
+        type: duration
+        description: Total time taken for validation process
+      pattern_occurrences:
+        name: Specific Pattern Occurrences
+        type: counter_map
+        description: Count of each pattern type found
+      resource_usage:
+        name: Resource Usage
+        type: metrics
+        description: Optional tracking of memory and CPU usage
+        optional: true
+
+  implementation:
+    name: Implement Metric Recording
+    description: Modify validation scripts to implement metric recording.
+    components:
+      initialization:
+        description: Declare variables to store metric data
+      counter_updates:
+        description: Update counters at appropriate points
+      error_recording:
+        description: Identify and record error types
+      metrics_integration:
+        description: Send data to PatternMetrics component
+
+  testing:
+    name: Testing and Verification
+    description: Verify correct metric recording and integration.
+    test_types:
+      unit_tests:
+        description: >
+          Test validation scripts with mocked PatternMetrics interaction
+      integration_tests:
+        description: >
+          Verify end-to-end metric recording and storage
+      monitoring:
+        description: >
+          Set up basic monitoring to observe metric generation
+
+example_implementation:
+  language: python
+  description: Example validation script showing metric recording
+  code_example: |
+    from pattern_metrics import PatternMetrics
+
+    pattern_metrics = PatternMetrics()
+
+    def validate_file(file):
+        pattern_metrics.increment_files_validated()
+        if check_integrity(file):
+            pattern_metrics.increment_integrity_successes()
+        else:
+            error_type = get_error_type(file)
+            pattern_metrics.record_error(error_type)

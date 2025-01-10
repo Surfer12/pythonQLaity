@@ -24,25 +24,23 @@ wheels/
 venv/
 ENV/
 env/
-.env/
+.env
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.DS_Store
-
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-.tox/
 
 # Logs
 *.log
 
-# Local development
-.env
+# Local development settings
 .env.local
 .env.*.local
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
