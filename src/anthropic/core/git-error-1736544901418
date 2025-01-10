@@ -1,0 +1,131 @@
+> git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file -
+trim trailing whitespace.................................................Passed
+fix end of files.........................................................Passed
+check yaml...............................................................Failed
+- hook id: check-yaml
+- exit code: 1
+
+mapping values are not allowed in this context
+  in "workspace/docs/analysis/gemini-thinkingjan6/prompt-engineering-recursive-meta-reflection-v3.yaml", line 3, column 14
+while scanning for the next token
+found character that cannot start any token
+  in "workspace/docs/analysis/gemini-thinkingjan6/prompt-engineering-structural-constraints-v1.yaml", line 44, column 1
+expected a single document in the stream
+  in "workspace/docs/analysis/gemini-thinkingjan6/cognitive-monitoring-validation-framework.yaml", line 1, column 1
+but found another document
+  in "workspace/docs/analysis/gemini-thinkingjan6/cognitive-monitoring-validation-framework.yaml", line 2, column 1
+while scanning a simple key
+  in "workspace/config/yaml-configurations-to-be-formatted/prompt-understanding-test-framework-v1.yaml", line 2, column 1
+could not find expected ':'
+  in "workspace/config/yaml-configurations-to-be-formatted/prompt-understanding-test-framework-v1.yaml", line 3, column 1
+
+check for added large files..............................................Passed
+black....................................................................Failed
+- hook id: black
+- files were modified by this hook
+
+reformatted examples/mojo-cross-integration/src/python/monitoring/pattern_metrics.py
+reformatted workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py
+reformatted src/anthropic/tools/run.py
+reformatted workspace/docs/analysis/meta-analysis/machine-learning-integration.py
+reformatted workspace/docs/analysis/meta-analysis/adaptive-response-generation.py
+reformatted src/anthropic/tools/collection.py
+reformatted workspace/docs/analysis/meta-analysis/advanced-cognitive-framework.py
+reformatted src/anthropic/core/loop.py
+reformatted src/anthropic/interfaces/streamlit_app.py
+
+All done! ✨ 🍰 ✨
+9 files reformatted, 7 files left unchanged.
+
+isort....................................................................Failed
+- hook id: isort
+- files were modified by this hook
+
+Fixing /Users/ryanoates/analysis-of-prompts-v0.2/examples/mojo-cross-integration/src/python/monitoring/pattern_metrics.py
+
+flake8...................................................................Failed
+- hook id: flake8
+- exit code: 1
+
+examples/mojo-cross-integration/src/python/monitoring/pattern_metrics.py:3:1: F401 'typing.List' imported but unused
+src/anthropic/core/loop.py:2:89: E501 line too long (116 > 88 characters)
+src/anthropic/core/loop.py:58:89: E501 line too long (107 > 88 characters)
+src/anthropic/core/loop.py:59:89: E501 line too long (97 > 88 characters)
+src/anthropic/core/loop.py:60:89: E501 line too long (113 > 88 characters)
+src/anthropic/core/loop.py:61:89: E501 line too long (292 > 88 characters)
+src/anthropic/core/loop.py:62:89: E501 line too long (238 > 88 characters)
+src/anthropic/core/loop.py:63:89: E501 line too long (199 > 88 characters)
+src/anthropic/core/loop.py:64:89: E501 line too long (189 > 88 characters)
+src/anthropic/core/loop.py:69:89: E501 line too long (226 > 88 characters)
+src/anthropic/core/loop.py:70:89: E501 line too long (395 > 88 characters)
+src/anthropic/core/loop.py:99:89: E501 line too long (92 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:58:89: E501 line too long (141 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:217:89: E501 line too long (101 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:222:89: E501 line too long (133 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:286:89: E501 line too long (111 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:326:13: F841 local variable 'messages' is assigned to but never used
+src/anthropic/interfaces/streamlit_app.py:352:89: E501 line too long (128 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:353:89: E501 line too long (122 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:464:89: E501 line too long (125 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:470:89: E501 line too long (122 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:481:89: E501 line too long (187 > 88 characters)
+src/anthropic/interfaces/streamlit_app.py:497:89: E501 line too long (92 > 88 characters)
+src/anthropic/tools/base.py:4:1: F401 'typing.Optional' imported but unused
+src/anthropic/tools/bash.py:60:89: E501 line too long (101 > 88 characters)
+src/anthropic/tools/bash.py:91:89: E501 line too long (101 > 88 characters)
+src/anthropic/tools/bash.py:104:89: E501 line too long (91 > 88 characters)
+src/anthropic/tools/bash.py:105:89: E501 line too long (91 > 88 characters)
+src/anthropic/tools/computer.py:9:1: F401 'typing.Any' imported but unused
+src/anthropic/tools/computer.py:142:89: E501 line too long (106 > 88 characters)
+src/anthropic/tools/computer.py:262:89: E501 line too long (98 > 88 characters)
+src/anthropic/tools/computer.py:310:89: E501 line too long (90 > 88 characters)
+src/anthropic/tools/computer.py:338:89: E501 line too long (92 > 88 characters)
+src/anthropic/tools/edit.py:80:89: E501 line too long (128 > 88 characters)
+src/anthropic/tools/edit.py:91:89: E501 line too long (119 > 88 characters)
+src/anthropic/tools/edit.py:100:89: E501 line too long (97 > 88 characters)
+src/anthropic/tools/edit.py:106:89: E501 line too long (108 > 88 characters)
+src/anthropic/tools/edit.py:114:89: E501 line too long (98 > 88 characters)
+src/anthropic/tools/edit.py:121:89: E501 line too long (127 > 88 characters)
+src/anthropic/tools/edit.py:136:89: E501 line too long (159 > 88 characters)
+src/anthropic/tools/edit.py:140:89: E501 line too long (165 > 88 characters)
+src/anthropic/tools/edit.py:144:89: E501 line too long (147 > 88 characters)
+src/anthropic/tools/edit.py:157:89: E501 line too long (104 > 88 characters)
+src/anthropic/tools/edit.py:167:89: E501 line too long (103 > 88 characters)
+src/anthropic/tools/edit.py:177:89: E501 line too long (137 > 88 characters)
+src/anthropic/tools/edit.py:200:89: E501 line too long (113 > 88 characters)
+src/anthropic/tools/edit.py:205:89: E501 line too long (108 > 88 characters)
+src/anthropic/tools/edit.py:213:89: E501 line too long (138 > 88 characters)
+src/anthropic/tools/edit.py:240:89: E501 line too long (160 > 88 characters)
+src/anthropic/tools/edit.py:252:89: E501 line too long (103 > 88 characters)
+src/anthropic/tools/edit.py:256:89: E501 line too long (97 > 88 characters)
+src/anthropic/tools/edit.py:263:89: E501 line too long (96 > 88 characters)
+src/anthropic/tools/run.py:5:89: E501 line too long (267 > 88 characters)
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:4:42: F821 undefined name 'CognitiveFramework'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:11:56: F821 undefined name 'Dict'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:11:66: F821 undefined name 'Any'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:12:10: F821 undefined name 'Dict'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:12:20: F821 undefined name 'Any'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:28:89: E501 line too long (94 > 88 characters)
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:30:49: F821 undefined name 'json'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:49:56: F821 undefined name 'Dict'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:49:66: F821 undefined name 'Any'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:50:10: F821 undefined name 'Dict'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:50:20: F821 undefined name 'Any'
+workspace/docs/analysis/meta-analysis/adaptive-response-generation.py:60:35: F821 undefined name 'datetime'
+workspace/docs/analysis/meta-analysis/advanced-cognitive-framework.py:6:1: F401 'typing.Optional' imported but unused
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:5:37: F821 undefined name 'CognitiveFramework'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:11:23: F821 undefined name 'List'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:11:28: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:11:46: F821 undefined name 'Callable'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:11:56: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:11:60: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:12:10: F821 undefined name 'List'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:12:15: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:34:30: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:34:47: F821 undefined name 'Callable'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:34:57: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:34:61: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:35:10: F821 undefined name 'T'
+workspace/docs/analysis/meta-analysis/distributed-cognitive-processessing-framekwork.py:45:16: F821 undefined name 'asyncio'
+workspace/docs/analysis/meta-analysis/machine-learning-integration.py:6:36: F821 undefined name 'CognitiveFramework'
+
