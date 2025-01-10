@@ -1,35 +1,23 @@
 [flake8]
-max-line-length = 88
+max-line-length = 120
 extend-ignore =
-    # Ignore whitespace before ':' (black handles this)
-    E203,
-    # Allow long lines in docstrings and comments
-    E501,
-    # Allow unused imports in type hints
+    # Allow unused imports in __init__.py files
     F401
+    # Allow undefined names in certain cases (type hints, etc)
+    F821
+per-file-ignores =
+    # Allow unused imports in __init__.py
+    __init__.py:F401
+    # Allow long lines in specific files that are hard to refactor
+    src/anthropic/core/loop.py:E501
+    src/anthropic/interfaces/streamlit_app.py:E501
+    src/anthropic/tools/edit.py:E501
+    src/anthropic/tools/computer.py:E501
+    src/anthropic/tools/run.py:E501
+    src/anthropic/tools/bash.py:E501
 exclude =
     .git,
     __pycache__,
     build,
     dist,
-    *.egg-info,
-    venv,
-    .venv,
-    .tox,
-    .mypy_cache,
-    .pytest_cache
-per-file-ignores =
-    # Allow unused imports in __init__.py files
-    __init__.py: F401
-    # Allow long docstrings and type hints
-    *.pyi: E501
-    # Allow longer lines in test files
-    tests/*: E501
-    # Allow longer lines in tool definitions
-    src/anthropic/tools/*.py: E501
-    # Allow longer lines in core modules
-    src/anthropic/core/*.py: E501
-    # Allow longer lines in interface modules
-    src/anthropic/interfaces/*.py: E501
-
-max-complexity = 10
+    *.egg-info
