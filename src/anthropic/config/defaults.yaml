@@ -1,0 +1,33 @@
+# Default configuration for Code Sentinel
+
+output:
+  format: text
+  verbosity: 1
+  color: true
+
+analysis:
+  max_file_size: 10485760 # 10MB
+  ignore_patterns:
+    - "**/.git/**"
+    - "**/node_modules/**"
+    - "**/__pycache__/**"
+    - "**/*.pyc"
+  parallel: true
+  max_workers: 4
+
+security:
+  enable_checks: true
+  severity_threshold: medium
+  custom_rules: []
+
+database:
+  url: sqlite:///code_sentinel.db
+  pool_size: 5
+  max_overflow: 10
+  echo: false
+
+cache:
+  enable: true
+  directory: .code_sentinel_cache
+  max_size: 104857600 # 100MB
+  ttl: 86400 # 24 hours
