@@ -3,6 +3,24 @@ from typing import Dict, List
 
 import streamlit as st
 from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
+from python.cognitive_framework.tools.meta_cognitive import (
+    BaseObserverTool,
+    صعب_التنبؤ_Tool,
+    LLMComparisonTool,
+    LLMEvaluationTool,
+     смысловой_анализ_Tool,
+     විශ්ලේෂණ_ප්‍රතිඵල_Tool,
+    හේතු_පාඨ_Tool,
+    Meta টুল,
+    ContextAwareRAGTool,
+    LLMRAGComparisonTool,
+    HypotheticalDocumentEmbeddingsTool,
+    ToxicityAnalysisTool,
+    BiasDetectionTool,
+    CodeAnalysisTool,
+    SecurityAnalysisTool,
+    হাম_তুলনামূলক_বিশ্লেষণ_Tool,
+)
 
 # Define the default system prompt
 DEFAULT_SYSTEM_PROMPT = "You are a helpful assistant."
