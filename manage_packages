@@ -1,0 +1,40 @@
+manage_packages() {
+    local action=$1
+    local manager=$2
+    shift 2
+    local packages=("$@")
+
+    for package in "${packages[@]}"; do
+        echo "$action $package using $manager"
+        if [ "$action" == "Uninstalling" ]; then
+            if [ "$manager" == "apt" ]; then
+                sudo apt-get remove --purge -y "$package" || echo "Failed to uninstall $package"
+            elif [ "$manager" == "pip" ]; then
+                pip uninstall -y "$package" || echo "Failed to uninstall $package"
+            else
+                echo "Unsupported package manager: $manager"
+            fi
+        fi
+    done
+}
+
+# ... existing code ...
+
+# Check if the activate script has execute permissions
+if [ ! -x "venv/bin/activate" ]; then
+    echo "Adding execute permissions to venv/bin/activate"
+    chmod +x "venv/bin/activate"
+fi
+
+# Activate the virtual environment
+source venv/bin/activate || echo "Failed to activate virtual environment"
+
+# ... existing code ...
+
+# Uninstall packages using apt
+manage_packages "Uninstalling" "apt" "${packages_to_uninstall[@]}"
+
+# Install packages using apt
+manage_packages "Installing" "apt" "${packages_to_install[@]}"
+
+# ... existing code ...
