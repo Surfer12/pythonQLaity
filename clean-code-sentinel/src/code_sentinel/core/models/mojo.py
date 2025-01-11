@@ -3,10 +3,14 @@
 import re
 from typing import Dict, List, Any
 
+from ..analyzers.mojo_ast import MojoASTAnalyzer, Finding
 from .base import CodeModel, CodeIssue, AnalysisContext
 
 class MojoModel(CodeModel):
     """Model for analyzing Mojo code."""
+
+    def __init__(self):
+        self.ast_analyzer = MojoASTAnalyzer()
 
     def analyze(self, context: AnalysisContext) -> List[CodeIssue]:
         """Analyze Mojo code and find issues.
@@ -22,15 +26,20 @@ class MojoModel(CodeModel):
         # Get enabled checks from config
         enabled_checks = self._get_enabled_checks(context.config)
 
-        # Run enabled checks
+        # Run AST-based analysis
+        ast_findings = self.ast_analyzer.analyze_code(
+            context.content,
+            context.file_path
+        )
+        issues.extend(self._convert_findings_to_issues(ast_findings))
+
+        # Run regex-based checks
         if 'struct_naming' in enabled_checks:
             issues.extend(self._check_struct_naming(context))
         if 'fn_naming' in enabled_checks:
             issues.extend(self._check_fn_naming(context))
         if 'type_hints' in enabled_checks:
             issues.extend(self._check_type_hints(context))
-        if 'memory_management' in enabled_checks:
-            issues.extend(self._check_memory_management(context))
 
         return issues
 
@@ -79,6 +88,21 @@ class MojoModel(CodeModel):
                 'name': 'Memory Management',
                 'description': 'Check for proper memory management patterns',
                 'severity': 'high'
+            },
+            'unsafe_functions': {
+                'name': 'Unsafe Function Usage',
+                'description': 'Check for usage of potentially unsafe functions',
+                'severity': 'high'
+            },
+            'resource_management': {
+                'name': 'Resource Management',
+                'description': 'Check for proper resource acquisition and release',
+                'severity': 'high'
+            },
+            'ownership_model': {
+                'name': 'Ownership Model',
+                'description': 'Check for proper use of Mojo ownership annotations',
+                'severity': 'high'
             }
         }
 
@@ -89,6 +113,21 @@ class MojoModel(CodeModel):
             check_id for check_id, check_config in checks_config.items()
             if check_config.get('enabled', True)
         ]
+
+    def _convert_findings_to_issues(self, findings: List[Finding]) -> List[CodeIssue]:
+        """Convert AST analyzer findings to code issues."""
+        issues = []
+        for finding in findings:
+            issues.append(CodeIssue(
+                file=str(finding.file_path),
+                line=finding.line,
+                column=finding.column,
+                type=finding.category,
+                severity=finding.severity,
+                message=finding.message,
+                snippet=finding.snippet
+            ))
+        return issues
 
     def _check_struct_naming(self, context: AnalysisContext) -> List[CodeIssue]:
         """Check struct naming conventions."""
@@ -153,13 +192,6 @@ class MojoModel(CodeModel):
                     fix_suggestion="Add type hints for all parameters"
                 ))
 
-        return issues
-
-    def _check_memory_management(self, context: AnalysisContext) -> List[CodeIssue]:
-        """Check memory management patterns."""
-        issues = []
-        # Add memory management checks specific to Mojo
-        # This is a placeholder for future implementation
         return issues
 
     @staticmethod

@@ -14,16 +14,46 @@ checks:
     enabled: true
     severity: high
     checks:
+      # AST-based checks
+      unsafe_functions:
+        enabled: true
+        severity: high
+        functions:
+          - shell_execute
+          - eval
+          - exec
+          - system
+      memory_management:
+        enabled: true
+        severity: high
+        required_patterns:
+          - owned
+          - borrowed
+          - inout
+          - memcpy
+          - memset_zero
+      resource_management:
+        enabled: true
+        severity: high
+        track_resources:
+          - file_handles
+          - memory_allocations
+          - network_connections
+      ownership_model:
+        enabled: true
+        severity: high
+        enforce_annotations: true
+
+      # Regex-based checks
       struct_naming:
         enabled: true
         severity: medium
+        pattern: "^[A-Z][a-zA-Z0-9]*$"
       fn_naming:
         enabled: true
         severity: medium
+        pattern: "^[a-z][a-z0-9_]*$"
       type_hints:
-        enabled: true
-        severity: high
-      memory_management:
         enabled: true
         severity: high
 
@@ -68,6 +98,11 @@ languages:
       function: snake_case
       variable: snake_case
       constant: SCREAMING_SNAKE_CASE
+    ast_analysis:
+      parser: native  # or 'python_bridge'
+      cache_asts: true
+      max_ast_cache_size_mb: 100
+      analysis_timeout_ms: 5000
 
 # Reporting settings
 reporting:
