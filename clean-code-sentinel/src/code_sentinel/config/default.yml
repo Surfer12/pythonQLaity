@@ -9,6 +9,25 @@ analysis:
 
 # Check categories
 checks:
+  # Mojo-specific checks
+  mojo:
+    enabled: true
+    severity: high
+    checks:
+      struct_naming:
+        enabled: true
+        severity: medium
+      fn_naming:
+        enabled: true
+        severity: medium
+      type_hints:
+        enabled: true
+        severity: high
+      memory_management:
+        enabled: true
+        severity: high
+
+  # General security checks
   security:
     enabled: true
     severity: high
@@ -18,6 +37,7 @@ checks:
       - command_injection
       - path_traversal
 
+  # Code quality checks
   quality:
     enabled: true
     severity: medium
@@ -27,6 +47,7 @@ checks:
       - duplicate_code
       - naming_conventions
 
+  # Style checks
   style:
     enabled: true
     severity: low
@@ -35,6 +56,18 @@ checks:
       - whitespace
       - documentation
       - imports
+
+# Language-specific settings
+languages:
+  mojo:
+    file_extensions: ['.mojo', '.🔥']
+    max_line_length: 100
+    indent_size: 4
+    naming_conventions:
+      struct: PascalCase
+      function: snake_case
+      variable: snake_case
+      constant: SCREAMING_SNAKE_CASE
 
 # Reporting settings
 reporting:
