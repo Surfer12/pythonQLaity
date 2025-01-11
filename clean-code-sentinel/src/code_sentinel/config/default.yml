@@ -1,0 +1,52 @@
+---
+# Default configuration for Code Sentinel
+
+# Analysis settings
+analysis:
+  timeout: 30  # Default timeout in seconds
+  cache_enabled: true
+  generate_fixes: true
+
+# Check categories
+checks:
+  security:
+    enabled: true
+    severity: high
+    checks:
+      - sql_injection
+      - xss
+      - command_injection
+      - path_traversal
+
+  quality:
+    enabled: true
+    severity: medium
+    checks:
+      - code_complexity
+      - dead_code
+      - duplicate_code
+      - naming_conventions
+
+  style:
+    enabled: true
+    severity: low
+    checks:
+      - line_length
+      - whitespace
+      - documentation
+      - imports
+
+# Reporting settings
+reporting:
+  formats:
+    - text
+    - json
+  include_snippets: true
+  max_suggestions: 3
+
+# Cache settings
+cache:
+  enabled: true
+  directory: ".code-sentinel-cache"
+  max_size_mb: 100
+  ttl_hours: 24
