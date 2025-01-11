@@ -1,8 +1,10 @@
+"""Tool for running Code Sentinel analysis in the Computer Use Demo environment."""
+
 import json
 import subprocess
-from pathlib import Path
-from typing import Optional, Dict, List, Union
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
 @dataclass
 class AnalysisToolResult:
@@ -130,14 +132,18 @@ class AnalysisTool:
             if sev_issues:
                 summary.append(f"\n{severity.upper()} severity issues:")
                 for issue in sev_issues:
-                    summary.append(f"- {issue['type']} in {issue['file']} line {issue['line']}")
+                    summary.append(
+                        f"- {issue['type']} in {issue['file']} line {issue['line']}"
+                    )
                     if issue.get('fix_suggestion'):
                         summary.append(f"  Suggestion: {issue['fix_suggestion']}")
 
         # Add stats
         summary.append(f"\nAnalysis Stats:")
         summary.append(f"Files analyzed: {results.stats['files_analyzed']}")
-        summary.append(f"Analysis time: {results.stats['analysis_time']:.2f} seconds")
+        summary.append(
+            f"Analysis time: {results.stats['analysis_time']:.2f} seconds"
+        )
 
         return "\n".join(summary)
 
